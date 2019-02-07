@@ -8,14 +8,14 @@ import javax.persistence.Converter;
 import java.io.IOException;
 
 @Converter(autoApply = true)
-public class JsonUtil implements AttributeConverter<Object, String> {
+public class JsonUtil implements AttributeConverter<Query, String> {
 
     private final static ObjectMapper MAPPER = new ObjectMapper();
 
     @Override
-    public String convertToDatabaseColumn(Object meta){
+    public String convertToDatabaseColumn(Query query){
         try {
-            return MAPPER.writeValueAsString(meta);
+            return MAPPER.writeValueAsString(query);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -24,9 +24,9 @@ public class JsonUtil implements AttributeConverter<Object, String> {
     }
 
     @Override
-    public Object convertToEntityAttribute(String dbData) {
+    public Query convertToEntityAttribute(String dbData) {
         try {
-            return MAPPER.readValue(dbData, Object.class);
+            return MAPPER.readValue(dbData, Query.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
