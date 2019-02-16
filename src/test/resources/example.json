@@ -1,0 +1,37 @@
+{
+  "teste": [
+    {
+      "_id": {
+        "$oid": "5bd32a909d34ec0bfe5c5c2b"
+      },
+      "userId": "5bd29a2c04ea8a639c9c842a",
+      "query": {
+        "capitalSocial": [],
+        "matrizFilial": [],
+        "qsaNome": [],
+        "codIbge": [],
+        "estado": [],
+        "cidade": [],
+        "cep": [],
+        "bairro": [],
+        "endereco": [],
+        "razaoSocial": [],
+        "nomeFantasia": [
+          "IBI"
+        ],
+        "naturezaJuridica": [],
+        "cnae": [],
+        "cnaePrincipal": [],
+        "cnaeSecundario": [],
+        "tipoAtividade": [],
+        "situacaoCadastral": []
+      },
+      "name": "IBI",
+      "active": true,
+      "createDate": {
+        "$date": "2018-10-26T14:54:08.601Z"
+      },
+      "_class": "br.com.asserttecnologia.dataone.entity.UserAlertsTerm"
+    }
+  ]
+}
