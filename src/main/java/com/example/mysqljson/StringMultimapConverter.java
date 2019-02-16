@@ -1,23 +1,28 @@
 package com.example.mysqljson;
 
-import com.example.mysqljson.domain.Query;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Multimap;
 import java.io.IOException;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Converter(autoApply = true)
-public class StringMultimapConverter implements AttributeConverter<Query, String> {
+@Component
+public class StringMultimapConverter implements
+    AttributeConverter<Multimap<String, String>, String> {
 
-  @Autowired
   private ObjectMapper objectMapper;
 
+  @Autowired
+  public void setObjectMapper(ObjectMapper objectMapper) {
+    this.objectMapper = objectMapper;
+  }
+
   @Override
-  public String convertToDatabaseColumn(Query query) {
+  public String convertToDatabaseColumn(Multimap<String, String> query) {
 
     try {
       return objectMapper.writeValueAsString(query);
@@ -29,17 +34,18 @@ public class StringMultimapConverter implements AttributeConverter<Query, String
   }
 
   @Override
-  public Query convertToEntityAttribute(String dbData) {
+  public Multimap<String, String> convertToEntityAttribute(String dbData) {
     try {
-      Multimap m = objectMapper.readValue(dbData, new TypeReference<Multimap<String, String>>() {
-      });
-      System.out.println(m.entries());
-      return null;
+      Multimap<String, String> navs = objectMapper.readValue(
+          objectMapper.treeAsTokens(objectMapper.readTree(dbData)),
+          objectMapper.getTypeFactory().constructMapLikeType(
+              Multimap.class, String.class, String.class));
+
+      return navs;
     } catch (IOException e) {
-      e.printStackTrace();
+      return null;
     }
 
-    return new Query();
   }
 
 }

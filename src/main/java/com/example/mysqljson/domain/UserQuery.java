@@ -2,6 +2,7 @@ package com.example.mysqljson.domain;
 
 import com.example.mysqljson.StringMultimapConverter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.google.common.collect.Multimap;
 import java.util.Objects;
 import java.util.StringJoiner;
 import javax.persistence.Column;
@@ -23,7 +24,7 @@ public class UserQuery {
   private Boolean active;
   @Convert(converter = StringMultimapConverter.class)
   @Column(columnDefinition = "JSON")
-  private Query query;
+  private Multimap<String, String> query;
 
   public Long getId() {
     return id;
@@ -61,11 +62,11 @@ public class UserQuery {
     return this;
   }
 
-  public Query getQuery() {
+  public Multimap<String, String> getQuery() {
     return query;
   }
 
-  public void setQuery(Query query) {
+  public void setQuery(Multimap<String, String> query) {
     this.query = query;
   }
 
