@@ -1,37 +1,50 @@
 package com.example.mysqljson;
 
-import com.example.mysqljson.config.ObjectMapperConfig;
-import com.example.mysqljson.domain.Query;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import com.google.common.io.CharStreams;
 import java.io.IOException;
-import java.io.InputStream;
-import org.junit.Assert;
+import java.io.InputStreamReader;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.junit4.SpringRunner;
 
-@RunWith(SpringRunner.class)
 public class StringMultimapConverterTest {
 
-  private ObjectMapper objectMapper;
+  private StringMultimapConverter converter;
 
   @Before
   public void setup() {
-    objectMapper = new ObjectMapper();
+    ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.registerModule(new GuavaModule());
+    converter = new StringMultimapConverter();
+    converter.setObjectMapper(objectMapper);
   }
 
   @Test
   public void shouldReturnCorrectStructure() throws IOException {
+    String json = CharStreams.toString(
+        new InputStreamReader(getClass().getResourceAsStream("/example_query.json")));
 
-    try (InputStream stream = getClass().getResourceAsStream("/example.json")) {
-      Multimap<String, String> navs = objectMapper.readValue(
-          objectMapper.treeAsTokens(objectMapper.readTree(stream)),
-          objectMapper.getTypeFactory().constructMapLikeType(
-              Multimap.class, String.class, String.class));
-    }
+    Multimap<String, String> result = converter.convertToEntityAttribute(json);
+
+    assertThat(result.toString())
+        .contains("{nomeFantasia=[IBI]}")
+        .doesNotContain("tipoAtividade");
+  }
+
+  @Test
+  public void shouldReturnAJsonLikeString() {
+    Multimap<String, String> multimap = ImmutableMultimap
+        .<String, String>builder()
+        .put("nomeFantasia", "IBI")
+        .build();
+
+    String result = converter.convertToDatabaseColumn(multimap);
+
+    assertThat(result).contains("\"nomeFantasia\":[\"IBI\"]");
   }
 }

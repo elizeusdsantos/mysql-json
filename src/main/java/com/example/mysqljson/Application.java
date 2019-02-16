@@ -18,10 +18,9 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class Application {
 
+  private static final Logger log = LoggerFactory.getLogger(Application.class);
   @Autowired
   public ObjectMapper objectMapper;
-
-  private static final Logger log = LoggerFactory.getLogger(Application.class);
 
   public static void main(String[] args) {
     SpringApplication.run(Application.class);
@@ -42,12 +41,12 @@ public class Application {
       }
       repository.save(user);
 
-            Iterable<UserQuery> allUsers = repository.findAll();
+      Iterable<UserQuery> allUsers = repository.findAll();
 
-            for (UserQuery foundUser : allUsers) {
+      for (UserQuery foundUser : allUsers) {
 
-                log.info("User: {} == {} ? {}", foundUser, user, Objects.equals(user, foundUser));
-            }
+        log.info("User: {} == {} ? {}", foundUser, user, Objects.equals(user, foundUser));
+      }
     };
   }
 
