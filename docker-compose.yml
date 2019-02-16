@@ -1,0 +1,19 @@
+version: '3.3'
+
+services:
+  database:
+    image: mysql:8
+    environment:
+      MYSQL_DATABASE: 'mysql-json-example'
+      MYSQL_USER: 'appUser'
+      MYSQL_PASSWORD: 'appUserPassword'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    restart: 'no'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - my-db:/var/lib/mysql
+volumes:
+  my-db:
