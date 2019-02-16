@@ -42,13 +42,12 @@ public class Application {
       }
       repository.save(user);
 
-//            Iterable<UserQuery> allUsers = repository.findAll();
-//
-//            for (UserQuery foundUser : allUsers) {
-//
-//                log.info("User: {} == {} ? {}", foundUser, user, Objects.equals(user, foundUser));
-//            }
-      log.info("xpto");
+            Iterable<UserQuery> allUsers = repository.findAll();
+
+            for (UserQuery foundUser : allUsers) {
+
+                log.info("User: {} == {} ? {}", foundUser, user, Objects.equals(user, foundUser));
+            }
     };
   }
 
